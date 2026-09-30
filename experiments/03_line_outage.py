@@ -21,7 +21,7 @@ print()
 
 #Perform the line outage by disconnecting the selected line
 action = env.action_space({"set_line_status": [(line_to_disconnect, -1)]})
-obs_after, reward, done = env.step(action)
+obs_after, reward, done, info = env.step(action)
 
 #Record the state of the grid after the line outage
 max_line_loading_after = obs_after.rho.max()
