@@ -12,9 +12,6 @@ candidate_actions = {
     "increase_generator_0": {
         "redispatch": [(0, 10.0)]
     },
-    "increase_generator_1": {
-        "redispatch": [(1, 10.0)]
-    },
     "reconnect_line_17": {
         "set_line_status": [(17, 1)]
     },
