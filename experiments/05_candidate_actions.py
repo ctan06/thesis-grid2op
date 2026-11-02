@@ -10,7 +10,7 @@ import time
 candidate_actions = {
     "no_action": {},
     "increase_generator_0": {
-        "redispatch": [(0, 10.0)]
+        "redispatch": [(0, 5.0)]
     },
     "reconnect_line_17": {
         "set_line_status": [(17, 1)]
@@ -23,6 +23,11 @@ def create_post_outage_environment():
     #Create a new Grid2Op environment
     env = grid2op.make("l2rpn_case14_sandbox")
     env.reset()
+
+    print("Generator ramp-up limits:", env.gen_max_ramp_up)
+    print("Generator ramp-down limits:", env.gen_max_ramp_down)
+    print("Generator maximum outputs:", env.gen_pmax)
+    print("Generator minimum outputs:", env.gen_pmin)
 
     print("\n===== INITIAL GRID CONDITION =====")
 
@@ -73,6 +78,7 @@ for name, action_dict in candidate_actions.items():
     obs, reward, done, info = env.step(action)
     #Display the timestep after applying the candidate action.
     print("Timestep after candidate action:", obs.current_step)
+    print("Exception details:", info.get("exception"))
     #Record the time taken to apply the action and receive the resulting observation.
     execution_time = time.perf_counter() - start_time
 
