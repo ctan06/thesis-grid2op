@@ -24,9 +24,36 @@ def create_post_outage_environment():
     env = grid2op.make("l2rpn_case14_sandbox")
     env.reset()
 
+    print("\n===== INITIAL GRID CONDITION =====")
+
+    print("Current timestep:", env.get_obs().current_step)
+
+    print("Generator outputs:", env.get_obs().gen_p)
+
+    print("Load demands:", env.get_obs().load_p)
+
+    print("Line statuses:", env.get_obs().line_status)
+
+    print("Grid topology:", env.get_obs().topo_vect)
+
+    print("Line loadings:", env.get_obs().rho)
+
+    print("==================================\n")
+
     #Disconnect line 17 to simulate a line outage
     outage_action = env.action_space({"set_line_status": [(17, -1)]})
-    env.step(outage_action)
+    obs_after_outage, reward, done, info = env.step(outage_action)
+
+    print("\n===== GRID CONDITION AFTER OUTAGE =====")
+
+    print("Current timestep:", obs_after_outage.current_step)
+    print("Generator outputs:", obs_after_outage.gen_p)
+    print("Load demands:", obs_after_outage.load_p)
+    print("Line statuses:", obs_after_outage.line_status)
+    print("Grid topology:", obs_after_outage.topo_vect)
+    print("Line loadings:", obs_after_outage.rho)
+
+    print("=======================================\n")
 
     return env
 
@@ -44,6 +71,8 @@ for name, action_dict in candidate_actions.items():
 
     #Apply the candidate action.
     obs, reward, done, info = env.step(action)
+    #Display the timestep after applying the candidate action.
+    print("Timestep after candidate action:", obs.current_step)
     #Record the time taken to apply the action and receive the resulting observation.
     execution_time = time.perf_counter() - start_time
 
